@@ -371,7 +371,7 @@ you should place your code here."
         (set-fontset-font (frame-parameter nil 'font)
                           charset
                           (font-spec
-                           :family "wenquanyi micro hei"
+                           :family font-name-cn
                            :size font-size-cn))))
     )
 
