@@ -1,2 +1,52 @@
-# .spacemacs.d
-my spacemacs configuration
+#+TITLE: .spacemacs.d
+
+* Table of Contents                                        :TOC_4_gh:noexport:
+- [[#description][Description]]
+  -  [[#features][Features:]]
+- [[#install][Install]]
+- [[#key-bindings][Key bindings]]
+
+* Description
+  my spacemacs configuration
+**  Features:
+   - editing style emacs
+   - 4k resolution support
+   - org-mode
+* Install
+  1. Backup current emacs configuration.
+     #+BEGIN_SRC shell
+     cd ~
+     mv .emacs.d .emacs.d.bak
+     #+END_SRC
+  2. Install [[https:github.com/syl20bnr/spacemacs][spacemacs]].
+     #+BEGIN_SRC shell
+     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+     #+END_SRC
+
+     switch to develop branch if need.
+     #+BEGIN_SRC shell
+     cd ~/.emacs.d
+     git branch develop /remotes/origin/develop
+     #+END_SRC
+  3. install my configuration.
+     #+BEGIN_SRC shell
+     git clone https://github.com/paruka/.spacemacs.d.git ~/.spacemacs.d
+     #+END_SRC
+  4. install dependencies
+     1. [[https:github.com/adobe-fonts/source-code-pro][source code pro]] font
+        #+BEGIN_EXAMPLE
+        yaourt -S adobe-source-code-pro-fonts
+        #+END_EXAMPLE
+     2. [[http://ternjs.net//][Tern]]
+        #+BEGIN_EXAMPLE
+        npm install -g tern
+        #+END_EXAMPLE
+* Key bindings
+  | Key Binding | Description          |
+  |-------------+----------------------|
+  | C-;         | Leader key           |
+  | C-; i s     | helm-yas             |
+  | C-; j j     | evil-avy-goto-char   |
+  | C-c i s     | insert begin src     |
+  | C-c c       | org-capture          |
+  | C-; m c     | org-edit-source-exit |
