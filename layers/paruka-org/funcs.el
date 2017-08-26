@@ -1,13 +1,13 @@
 (when (spacemacs/system-is-mac)
- (defun paruka/notification (title message)
-   (call-process "terminal-notifier"
-                 nil 0 nil
-                 "-group" "Emacs"
-                 "-title" title
-                 "-sender" "org.gnu.Emacs"
-                 "-message" message
-                 "-sound" "default"
-                 "-activate" "org.gnu.Emacs")))
+  (defun paruka/notification (title message)
+    (call-process "terminal-notifier"
+                  nil 0 nil
+                  "-group" "Emacs"
+                  "-title" title
+                  "-sender" "org.gnu.Emacs"
+                  "-message" message
+                  "-sound" "default"
+                  "-activate" "org.gnu.Emacs")))
 
 (when (spacemacs/system-is-linux)
   (defun paruka/notification (title message)
@@ -27,14 +27,14 @@
        '(progn ,@body))))
 
 ;;; Show the clocked-in task - if any - in the header line
-(defun sanityinc/show-org-clock-in-header-line ()
+(defun paruka/show-org-clock-in-header-line ()
   (setq-default header-line-format '((" " org-mode-line-string " "))))
 
-(defun sanityinc/hide-org-clock-from-header-line ()
+(defun paruka/hide-org-clock-from-header-line ()
   (setq-default header-line-format nil))
 
 ;; Lots of stuff from http://doc.norang.ca/org-mode.html
-(defun sanityinc/grab-ditaa (url jar-name)
+(defun paruka/grab-ditaa (url jar-name)
   "Download URL and extract JAR-NAME as `org-ditaa-jar-path'."
   ;; TODO: handle errors
   (message "Grabbing " jar-name " for org.")
@@ -50,52 +50,52 @@
         (delete-file zip-temp)))))
 
 (define-minor-mode prose-mode
-        "Set up a buffer for prose editing.
+  "Set up a buffer for prose editing.
 This enables or modifies a number of settings so that the
 experience of editing prose is a little more like that of a
 typical word processor."
-        nil " Prose" nil
-        (if prose-mode
-            (progn
-              (setq truncate-lines nil)
-              (setq word-wrap t)
-              (setq cursor-type 'bar)
-              (when (eq major-mode 'org)
-                (kill-local-variable 'buffer-face-mode-face))
-              (buffer-face-mode 1)
-              ;;(delete-selection-mode 1)
-              (set (make-local-variable 'blink-cursor-interval) 0.6)
-              (set (make-local-variable 'show-trailing-whitespace) nil)
-              (flyspell-mode 1)
-              (when (fboundp 'visual-line-mode)
-                (visual-line-mode 1)))
-          (kill-local-variable 'truncate-lines)
-          (kill-local-variable 'word-wrap)
-          (kill-local-variable 'cursor-type)
-          (kill-local-variable 'show-trailing-whitespace)
-          (buffer-face-mode -1)
-          ;; (delete-selection-mode -1)
-          (flyspell-mode -1)
-          (when (fboundp 'visual-line-mode)
-            (visual-line-mode -1))))
+  nil " Prose" nil
+  (if prose-mode
+      (progn
+        (setq truncate-lines nil)
+        (setq word-wrap t)
+        (setq cursor-type 'bar)
+        (when (eq major-mode 'org)
+          (kill-local-variable 'buffer-face-mode-face))
+        (buffer-face-mode 1)
+        ;;(delete-selection-mode 1)
+        (set (make-local-variable 'blink-cursor-interval) 0.6)
+        (set (make-local-variable 'show-trailing-whitespace) nil)
+        (flyspell-mode 1)
+        (when (fboundp 'visual-line-mode)
+          (visual-line-mode 1)))
+    (kill-local-variable 'truncate-lines)
+    (kill-local-variable 'word-wrap)
+    (kill-local-variable 'cursor-type)
+    (kill-local-variable 'show-trailing-whitespace)
+    (buffer-face-mode -1)
+    ;; (delete-selection-mode -1)
+    (flyspell-mode -1)
+    (when (fboundp 'visual-line-mode)
+      (visual-line-mode -1))))
 
-(defun sanityinc/verify-refile-target ()
+(defun paruka/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets."
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
 
-(defun sanityinc/org-refile-anywhere (&optional goto default-buffer rfloc msg)
+(defun paruka/org-refile-anywhere (&optional goto default-buffer rfloc msg)
   "A version of `org-refile' which allows refiling to any subtree."
   (interactive "P")
   (let ((org-refile-target-verify-function))
     (org-refile goto default-buffer rfloc msg)))
 
-(defun sanityinc/org-agenda-refile-anywhere (&optional goto rfloc no-update)
+(defun paruka/org-agenda-refile-anywhere (&optional goto rfloc no-update)
   "A version of `org-agenda-refile' which allows refiling to any subtree."
   (interactive "P")
   (let ((org-refile-target-verify-function))
     (org-agenda-refile goto rfloc no-update)))
 
-(defun sanityinc/remove-empty-drawer-on-clock-out ()
+(defun paruka/remove-empty-drawer-on-clock-out ()
   (interactive)
   (save-excursion
     (beginning-of-line 0)

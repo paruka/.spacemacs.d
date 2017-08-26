@@ -32,8 +32,8 @@
 (defconst paruka-org-packages
   '(
     (org :location built-in)
-    org-mac-link
-    org-mac-iCal
+    (org-mac-link :toggle (spacemacs/system-is-mac))
+    (org-mac-iCal :toggle (spacemacs/system-is-mac))
     org-pomodoro
     org-cliplink
     org-fstree
@@ -82,11 +82,9 @@ Each entry is either:
       (setq org-pomodoro-audio-player "/usr/bin/mpv")
       ;;  (play-sound-file (org-pomodoro-sound :long-break))
       )
-    (when (spacemacs/system-is-mac)
-      (setq org-pomodoro-play-sounds nil)
-      )
 
-    ))
+    (when (spacemacs/system-is-mac)
+      (setq org-pomodoro-play-sounds nil))))
 
 (defun paruka-org/init-org-mac-link ()
   (use-package org-mac-link
@@ -106,20 +104,21 @@ Each entry is either:
     (setq deft-directory deft-dir)))
 
 (defun paruka-org/init-org-fstree ()
-  )
+  (use-package org-fstree :defer t))
 
 (defun paruka-org/init-org-cliplink ()
-  )
+  (use-package org-cliplink :defer t))
 
 (defun paruka-org/init-org-dashboard ()
-  )
+  (use-package org-dashboard :defer t))
 
 (defun paruka-org/init-plantuml-mode ()
-  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-  )
+  (use-package plantuml-mode
+    :defer t
+    :init (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))))
 
 (defun paruka-org/init-org-mac-iCal ()
-  )
+  (use-package org-mac-iCal :defer t))
 
 (defun paruka-org/post-init-org ()
   (with-eval-after-load 'org
@@ -172,29 +171,21 @@ Each entry is either:
             org-tags-column 80)
 
       ;; org plugins
-      (defconst paruka-org/plugin-path
-        (expand-file-name "plugins/" (file-name-directory dotspacemacs-directory)))
-
-      (when (not (f-dir-p paruka-org/plugin-path))
-        (message "Creating %s" paruka-org/plugin-path)
-        (make-directory paruka-org/plugin-path)
-        )
-
       (after-load 'ob-ditaa
         (unless (and (boundp 'org-ditaa-jar-path)
                      (file-exists-p org-ditaa-jar-path))
           (let ((jar-name "ditaa0_9.jar")
                 (url "http://jaist.dl.sourceforge.net/project/ditaa/ditaa/0.9/ditaa0_9.zip"))
             ;;      (setq org-ditaa-jar-path (expand-file-name jar-name (file-name-directory user-init-file)))
-            (setq org-ditaa-jar-path (expand-file-name jar-name paruka-org/plugin-path))
+            (setq org-ditaa-jar-path (expand-file-name jar-name paruka/plugin-path))
             (unless (file-exists-p org-ditaa-jar-path)
-              (sanityinc/grab-ditaa url jar-name)))))
+              (paruka/grab-ditaa url jar-name)))))
 
       (after-load 'ob-plantuml
         (when (string= "" org-plantuml-jar-path)
           (let ((jar-name "plantuml.1.2017.15.jar")
                 (url "https://downloads.sourceforge.net/project/plantuml/1.2017.15/plantuml.1.2017.15.jar?r=&ts=1501092829&use_mirror=nchc"))
-            (setq org-plantuml-jar-path (expand-file-name jar-name paruka-org/plugin-path))
+            (setq org-plantuml-jar-path (expand-file-name jar-name paruka/plugin-path))
             (setq plantuml-jar-path org-plantuml-jar-path)
             (unless (file-exists-p org-plantuml-jar-path)
               (url-copy-file url org-plantuml-jar-path)))))
@@ -243,7 +234,7 @@ Each entry is either:
         (add-to-list 'org-agenda-after-show-hook 'org-show-entry))
 
       ;; Exclude DONE state tasks from refile targets
-      (setq org-refile-target-verify-function 'sanityinc/verify-refile-target)
+      (setq org-refile-target-verify-function 'paruka/verify-refile-target)
 
       ;; Targets start with the file name - allows creating level 1 tasks
       ;;(setq org-refile-use-outline-path (quote file))
@@ -350,8 +341,7 @@ Each entry is either:
       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
 
       
-     ;;; Org clock
-
+      ;;; Org clock
       ;; Save the running clock and all clock history when exiting Emacs, load it on startup
       (after-load 'org
         (org-clock-persistence-insinuate))
@@ -371,9 +361,9 @@ Each entry is either:
             '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
 
       
-      (add-hook 'org-clock-in-hook 'sanityinc/show-org-clock-in-header-line)
-      (add-hook 'org-clock-out-hook 'sanityinc/hide-org-clock-from-header-line)
-      (add-hook 'org-clock-cancel-hook 'sanityinc/hide-org-clock-from-header-line)
+      (add-hook 'org-clock-in-hook 'paruka/show-org-clock-in-header-line)
+      (add-hook 'org-clock-out-hook 'paruka/hide-org-clock-from-header-line)
+      (add-hook 'org-clock-cancel-hook 'paruka/hide-org-clock-from-header-line)
 
       (after-load 'org-clock
         (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
@@ -392,7 +382,7 @@ Each entry is either:
       ;; Remove empty LOGBOOK drawers on clock out
 
       (after-load 'org-clock
-        (add-hook 'org-clock-out-hook 'sanityinc/remove-empty-drawer-on-clock-out 'append))
+        (add-hook 'org-clock-out-hook 'paruka/remove-empty-drawer-on-clock-out 'append))
 
       ;; TODO: warn about inconsistent items, e.g. TODO inside non-PROJECT
       ;; TODO: nested projects!

@@ -12,6 +12,7 @@
    - editing style emacs
    - 4k resolution support
    - org-mode
+   - cc-mode
 * Install
   1. Backup current emacs configuration.
      #+BEGIN_SRC shell
@@ -41,12 +42,38 @@
         #+BEGIN_EXAMPLE
         npm install -g tern
         #+END_EXAMPLE
+     3. vmd
+        #+BEGIN_EXAMPLE
+        npm install -g vmd
+        #+END_EXAMPLE
+     4. cc-mode dependencies
+        1. [[https://github.com/Andersbakken/rtags][rtags]]
+           #+BEGIN_EXAMPLE
+           git clone --recursive https://github.com/Andersbakken/rtags.git
+           cd rtags
+           cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+           make
+           cp -ar ./bin ~/.spacemacs.d/plugins/rtags
+           #+END_EXAMPLE
+        2. [[https://www.gnu.org/software/global/][gnu global]]
+           #+BEGIN_SRC 
+           yaourt -S global
+           #+END_SRC
+     5. osx dependencies
+        1. terminal-notifier
+           #+BEGIN_EXAMPLE
+           brew install terminal-notifier
+           brew link terminal-notifier
+           #+END_EXAMPLE
+
+        2. [[https://github.com/koddo/org-clock-statusbar-app][org-clock-statusbar]]
 * Key bindings
-  | Key Binding | Description          |
-  |-------------+----------------------|
-  | C-;         | Leader key           |
-  | C-; i s     | helm-yas             |
-  | C-; j j     | evil-avy-goto-char   |
-  | C-c i s     | insert begin src     |
-  | C-c c       | org-capture          |
-  | C-; m c     | org-edit-source-exit |
+  | Key Binding | Description           |
+  |-------------+-----------------------|
+  | C-;         | Leader key            |
+  | C-:         | Major mode leader key |
+  | C-; i s     | helm-yas              |
+  | C-; j j     | evil-avy-goto-char    |
+  | C-c i s     | insert begin src      |
+  | C-c c       | org-capture           |
+  | C-; m c     | org-edit-source-exit  |

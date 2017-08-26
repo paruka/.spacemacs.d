@@ -49,7 +49,7 @@ values."
           magit-revert-buffers 'silent
           magit-refs-show-commit-count 'all
           magit-revision-show-gravatars nil)
-     markdown
+     (markdown :variables markdown-live-preview-engine 'vmd)
      (org :variables
           org-want-todo-bindings t)
      (shell :variables
@@ -73,6 +73,7 @@ values."
      ;; version-control
      ;;ivy
 
+     gtags
      paruka
      ;;paruka-youdao-dictionary
      )
@@ -181,7 +182,7 @@ values."
    dotspacemacs-major-mode-leader-key ","
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
    ;; (default "C-M-m")
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+   dotspacemacs-major-mode-emacs-leader-key "C-:"
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs C-i, TAB and C-m, RET.
    ;; Setting it to a non-nil value, allows for separate commands under <C-i>
@@ -351,6 +352,11 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;; disable auto paste yank data to new buffer
+  ;; https://github.com/syl20bnr/spacemacs/issues/5435
+  (add-hook 'spacemacs-buffer-mode-hook
+            (lambda () (set (make-local-variable 'mouse-1-click-follows-link) nil)))
+
   ;;org-mode chinese font alignment
   (let ((font-size-en 14)
         (font-size-cn 16)
@@ -396,9 +402,16 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flycheck-clang-language-standard "c++1z")
+ '(flycheck-display-errors-delay 0.9)
+ '(flycheck-gcc-language-standard "c++17")
+ '(flycheck-googlelint-filter "-whitespace,+whitespace/braces")
+ '(flycheck-googlelint-linelength "80")
+ '(flycheck-googlelint-verbose "3")
+ '(flycheck-idle-change-delay 2.0)
  '(package-selected-packages
    (quote
-    (youdao-dictionary names chinese-word-at-point yaml-mode web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode plantuml-mode org-mac-link org-mac-iCal org-fstree org-dashboard org-cliplink lua-mode livid-mode skewer-mode simple-httpd less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc helm-css-scss helm-company helm-c-yasnippet haml-mode graphviz-dot-mode fuzzy engine-mode emmet-mode company-web web-completion-data company-tern dash-functional tern company-statistics company-anaconda company coffee-mode auto-yasnippet yasnippet ac-ispell auto-complete pangu-spacing find-by-pinyin-dired chinese-pyim pyim pyim-basedict ace-pinyin pinyinlib yapfify xterm-color shell-pop pyvenv pytest pyenv-mode py-isort pip-requirements multi-term live-py-mode hy-mode helm-pydoc eshell-z eshell-prompt-extras esh-help cython-mode anaconda-mode pythonic wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor auto-dictionary ws-butler winum volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu highlight elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed ace-link ace-jump-helm-line helm helm-core popup which-key undo-tree org-plus-contrib hydra evil-unimpaired f s dash async aggressive-indent adaptive-wrap ace-window avy)))
+    (vmd-mode helm-rtags flycheck-rtags company-rtags rtags company-c-headers helm-gtags ggtags modern-cpp-font-lock google-c-style youdao-dictionary names chinese-word-at-point yaml-mode web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode plantuml-mode org-mac-link org-mac-iCal org-fstree org-dashboard org-cliplink lua-mode livid-mode skewer-mode simple-httpd less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc helm-css-scss helm-company helm-c-yasnippet haml-mode graphviz-dot-mode fuzzy engine-mode emmet-mode company-web web-completion-data company-tern dash-functional tern company-statistics company-anaconda company coffee-mode auto-yasnippet yasnippet ac-ispell auto-complete pangu-spacing find-by-pinyin-dired chinese-pyim pyim pyim-basedict ace-pinyin pinyinlib yapfify xterm-color shell-pop pyvenv pytest pyenv-mode py-isort pip-requirements multi-term live-py-mode hy-mode helm-pydoc eshell-z eshell-prompt-extras esh-help cython-mode anaconda-mode pythonic wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor auto-dictionary ws-butler winum volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu highlight elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed ace-link ace-jump-helm-line helm helm-core popup which-key undo-tree org-plus-contrib hydra evil-unimpaired f s dash async aggressive-indent adaptive-wrap ace-window avy)))
  '(safe-local-variable-values (quote ((no-byte-compile t)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
