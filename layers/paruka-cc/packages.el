@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;
-;; Author:  <haruka@Shimazaki>
+;; Author:  paruka <paruka.me@gmail.com>
 ;; URL: https://github.com/syl20bnr/spacemacs
 ;;
 ;; This file is not part of GNU Emacs.
@@ -87,7 +87,11 @@ Each entry is either:
   (use-package cc-mode
     :defer
     :config
-    :init (add-hook 'c-mode-common-hook 'paruka/c-common-style)
+    :init (progn
+            (add-to-list 'auto-mode-alist
+                         `("\\.h\\'" . ,c-c++-default-mode-for-headers))
+            (add-hook 'c-mode-common-hook 'paruka/c-common-style)
+            )
     ;; (progn
     ;;   (require 'complile)
     ;;   (add-hook 'c-mode-hook

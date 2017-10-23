@@ -63,7 +63,7 @@ values."
                      spell-checking-enable-by-default nil)
      python
      yaml
-     lua
+     ;;lua
      html
      javascript
      react
@@ -355,6 +355,8 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;; https://github.com/syl20bnr/spacemacs/issues/9549
+  (require 'helm-bookmark)
   ;; disable auto paste yank data to new buffer
   ;; https://github.com/syl20bnr/spacemacs/issues/5435
   (add-hook 'spacemacs-buffer-mode-hook
