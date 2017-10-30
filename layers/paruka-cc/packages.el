@@ -86,12 +86,13 @@ Each entry is either:
 (defun paruka-cc/init-cc-mode ()
   (use-package cc-mode
     :defer
-    :config
-    :init (progn
-            (add-to-list 'auto-mode-alist
-                         `("\\.h\\'" . ,c-c++-default-mode-for-headers))
-            (add-hook 'c-mode-common-hook 'paruka/c-common-style)
-            )
+    :mode ("\\.h\\'" . c++-mode)
+    ;;:config
+    ;;:init (progn
+            ;; (add-to-list 'auto-mode-alist
+            ;;              `("\\.h\\'" . ,c-c++-default-mode-for-headers))
+      ;;      (add-hook 'c-mode-common-hook 'paruka/c-common-style)
+        ;;    )
     ;; (progn
     ;;   (require 'complile)
     ;;   (add-hook 'c-mode-hook
@@ -129,6 +130,7 @@ Each entry is either:
     ))
 
 (defun paruka-cc/post-init-cc-mode ()
+  (add-hook 'c-mode-common-hook 'paruka/c-common-style)
   )
 
 (defun paruka-cc/init-company-rtags ()

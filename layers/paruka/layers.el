@@ -13,4 +13,5 @@
                                       paruka-org
                                       paruka-cc
                                       paruka-lua
+                                      paruka-programming
                                       ))
