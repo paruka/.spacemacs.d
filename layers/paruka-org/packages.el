@@ -463,6 +463,7 @@ Each entry is either:
            (org . t)
            (plantuml . t)
            (C . t)
+           (lua . t)
            (sqlite . t))))
 
       ;;(require-package 'org-bullets)
