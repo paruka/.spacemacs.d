@@ -14,4 +14,5 @@
                                       paruka-cc
                                       paruka-lua
                                       paruka-programming
+                                      paruka-better-default
                                       ))
