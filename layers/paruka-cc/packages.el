@@ -34,17 +34,32 @@
     google-c-style
     modern-cpp-font-lock
     cc-mode
-    company-rtags
-    helm-rtags
-    flycheck-rtags
-    rtags
+    ;;company-rtags
+    ;;helm-rtags
+    ;;flycheck-rtags
+    ;;rtags
     flycheck
     company
     company-c-headers
     gdb-mi
     helm-make
-    ggtags
-    helm-gtags
+    ;;ggtags
+    ;;helm-gtags
+    (lsp-mode :location (recipe
+                         :fetcher github
+                         :repo "emacs-lsp/lsp-mode"))
+    (cquery :location (recipe
+                       :fetcher github
+                       :repo "cquery-project/emacs-cquery"))
+    (helm-xref :location (recipe
+                          :fetcher github
+                          :repo "brotzeit/helm-xref"))
+    (lsp-ui :location (recipe
+                       :fetcher github
+                       :repo "emacs-lsp/lsp-ui"))
+    (company-lsp :location (recipe
+                            :fetcher github
+                            :repo "tigersoldier/company-lsp"))
     )
   "The list of Lisp packages required by the paruka-cc layer.
 
@@ -72,6 +87,62 @@ Each entry is either:
 
       - A list beginning with the symbol `recipe' is a melpa
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
+
+(defun paruka-cc/init-lsp-mode ()
+  )
+
+(defun paruka-cc/init-cquery ()
+  (use-package cquery
+    :commands lsp-cquery-enable
+    :init
+    (progn
+      (add-hook 'c-mode-hook #'paruka/cquery-enable)
+      (add-hook 'c++-mode-hook #'paruka/cquery-enable)
+      (setq cquery-executable "/usr/bin/cquery")
+      (setq cquery-extra-args '("--log-file=/tmp/cq.log"))
+      (setq cquery-extra-init-params '(:index (:comments 2) :cacheFormat "msgpack"))
+      (setq cquery-sem-highlight-method 'font-lock))))
+
+(defun paruka-cc/post-init-cquery ()
+  (progn
+    (setq cquery-extra-init-params '(:completion (:detailedLabel t)))))
+
+(defun paruka-cc/init-helm-xref ()
+  (use-package helm-xref
+    :init
+    (progn
+      (setq xref-show-xrefs-function 'helm-xref-show-xrefs))))
+
+(defun paruka-cc/init-lsp-ui ()
+  (use-package lsp-ui
+    :init
+    (progn
+      (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+      (add-hook 'c-mode-hook 'flycheck-mode)
+      (add-hook 'c++-mode-hook 'flycheck-mode))
+    ))
+
+(defun paruka-cc/post-init-lsp-ui ()
+  (progn
+    (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+    (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+    (define-key evil-normal-state-map (kbd "C-p") 'lsp-ui-peek-jump-forward)
+    (define-key evil-normal-state-map (kbd "C-t") 'lsp-ui-peek-jump-backward)
+    (with-eval-after-load 'projectile
+      (setq projectile-project-root-files-top-down-recurring
+            (append '("compile_commands.json"
+                      ".cquery")
+                    projectile-project-root-files-top-down-recurring)))
+    ))
+
+(defun paruka-cc/init-company-lsp ()
+  (use-package company-lsp
+    :init
+    (progn
+      (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil))))
+
+(defun paruka-cc/post-init-company-lsp ()
+  (push 'company-lsp company-backends))
 
 (defun paruka-cc/init-google-c-style ()
   ;; (use-package google-c-style

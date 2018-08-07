@@ -36,7 +36,7 @@
     (org-mac-iCal :toggle (spacemacs/system-is-mac))
     org-pomodoro
     org-cliplink
-    org-fstree
+    ;;org-fstree
     org-dashboard
     plantuml-mode
     deft
@@ -103,8 +103,8 @@ Each entry is either:
     (setq deft-extension "org")
     (setq deft-directory deft-dir)))
 
-(defun paruka-org/init-org-fstree ()
-  (use-package org-fstree :defer t))
+;; (defun paruka-org/init-org-fstree ()
+;;   (use-package org-fstree :defer t))
 
 (defun paruka-org/init-org-cliplink ()
   (use-package org-cliplink :defer t))
@@ -130,7 +130,7 @@ Each entry is either:
       ;; (add-to-list 'org-modules "org-habit")
       (add-to-list 'org-modules 'org-habit)
       (require 'org-habit)
-      (require 'org-fstree)
+      ;;(require 'org-fstree)
       ;; 加密文章
       ;; "http://coldnew.github.io/blog/2013/07/13_5b094.html"
       ;; org-mode 設定

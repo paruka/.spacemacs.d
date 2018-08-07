@@ -254,3 +254,8 @@
       (setq rtags-install-process (start-process "*RTags install*" (current-buffer) "bash" (concat dir "/install-rtags.sh")))
       (set-process-sentinel rtags-install-process 'rtags-install-process-sentinel)
       (set-process-filter rtags-install-process 'rtags-install-process-filter))))
+
+(defun paruka/cquery-enable ()
+  (condition-case nil
+      (lsp-cquery-enable)
+    (user-error nil)))
